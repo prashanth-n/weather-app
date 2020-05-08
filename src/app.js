@@ -2,6 +2,8 @@ const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
 const app = express();
+//Setting a port
+const port = process.env.PORT || 3000;
 const geoCode = require('./utils/geocode');
 //Define path for express config
 const publicPath = path.join(__dirname, '../public');
@@ -34,10 +36,10 @@ app.get('/help', (req, res) => {
     });
 });
 app.get('/weather', (req, res) => {
-    if(!req.query.address){
+    if (!req.query.address) {
         return res.send({
-            error:'Please provide an address/location'
-        })    
+            error: 'Please provide an address/location'
+        })
     }
     geoCode.geoCode(req.query.address, (error, { lat, lng, placeName } = {}) => {
         if (error) {
@@ -58,22 +60,22 @@ app.get('/weather', (req, res) => {
             })
         })
     })
-   
+
 });
 app.get('/help/*', (req, res) => {
     res.render('404', {
         error: 'Help article not found',
         name: 'Prasanth N',
-        title:'404'
+        title: '404'
     })
 })
 app.get('*', (req, res) => {
-    res.render('404',{
-        title:'404',
+    res.render('404', {
+        title: '404',
         error: 'Page not found',
         name: 'Prasanth N'
     })
 })
-app.listen(3000, () => {
-    console.log('Server is running on port 3000')
+app.listen(port, () => {
+    console.log('Server is running on port' + port);
 });
